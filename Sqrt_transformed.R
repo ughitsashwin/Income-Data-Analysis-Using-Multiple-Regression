@@ -1,0 +1,100 @@
+setwd("/Users/ashwinsureshbabu/NCI/SEM 1/Statistics for Data Analytics")
+dataset1<- read.csv("transformincome.csv", header=T, stringsAsFactors = T)
+head(dataset1)
+
+#removing outliers/rows using cooks distance
+
+cooksD <- cooks.distance(lmfit1)
+n <- nrow(dataset1)
+plot(cooksD, main = "Cooks dictance for influential obs")
+abline(h = 4/n, lty = 4, col = "red")
+influential_obs <- as.numeric(names(cooksD)[(cooksD > (4/n))])
+rm_outlier_cook <- dataset1[-influential_obs, ]
+dim(rm_outlier_cook)
+boxplot(rm_outlier_cook$sqrtofincome)
+cor(rm_outlier_cook)
+
+
+lmfit1<-lm(sqrtofincome~yrsempl+creddebt+othdebt+jobsat+carvalue, data=rm_outlier_cook)
+summary(lmfit1)
+par(mfrow=c(2,2))
+plot(lmfit1)
+ncvTest(lmfit1)
+AIC(lmfit1)
+BIC(lmfit1)
+
+lmfit1<-lm(sqrtofincome~yrsempl+creddebt+othdebt+jobsat+sqrtofcarvalue, data=rm_outlier_cook)
+summary(lmfit1)
+par(mfrow=c(2,2))
+plot(lmfit1)
+ncvTest(lmfit1)
+AIC(lmfit1)
+BIC(lmfit1)
+
+lmfit1<-lm(sqrtofincome~yrsempl+creddebt+othdebt+sqrtofjobsat+carvalue, data=rm_outlier_cook)
+summary(lmfit1)
+par(mfrow=c(2,2))
+plot(lmfit1)
+ncvTest(lmfit1)
+AIC(lmfit1)
+BIC(lmfit1)
+
+lmfit1<-lm(sqrtofincome~yrsempl+creddebt+sqrtofothdebt+jobsat+carvalue, data=rm_outlier_cook)
+summary(lmfit1)
+par(mfrow=c(2,2))
+plot(lmfit1)
+ncvTest(lmfit1)
+AIC(lmfit1)
+BIC(lmfit1)
+
+lmfit1<-lm(sqrtofincome~yrsempl+sqrtofcredebt+othdebt+jobsat+carvalue, data=rm_outlier_cook)
+summary(lmfit1)
+par(mfrow=c(2,2))
+plot(lmfit1)
+ncvTest(lmfit1)
+AIC(lmfit1)
+BIC(lmfit1)
+
+lmfit1<-lm(sqrtofincome~sqrtofyrsempl+creddebt+othdebt+jobsat+carvalue, data=rm_outlier_cook)
+summary(lmfit1)
+par(mfrow=c(2,2))
+plot(lmfit1)
+ncvTest(lmfit1)
+AIC(lmfit1)
+BIC(lmfit1)
+
+lmfit1<-lm(sqrtofincome~sqrtofyrsempl+sqrtcredebt+othdebt+jobsat+carvalue, data=rm_outlier_cook)
+summary(lmfit1)
+par(mfrow=c(2,2))
+plot(lmfit1)
+ncvTest(lmfit1)
+AIC(lmfit1)
+BIC(lmfit1)
+
+lmfit1<-lm(sqrtofincome~yrsempl+sqrtcredebt+sqrtofothdebt+sqrtofjobsat+sqrtofcarvalue, data=rm_outlier_cook)
+summary(lmfit1)
+par(mfrow=c(2,2))
+plot(lmfit1)
+ncvTest(lmfit1)
+AIC(lmfit1)
+BIC(lmfit1)
+
+
+
+lmfit1<-lm(logofincome~sqrtcredebt+sqrtofothdebt+default+sqrtofcarvalue, data=rm_outlier_cook)
+summary(lmfit1)
+par(mfrow=c(2,2))
+plot(lmfit1)
+ncvTest(lmfit1)
+AIC(lmfit1)
+BIC(lmfit1)
+
+
+income_list <- read.csv("/Users/ashwinsureshbabu/NCI/SEM 1/Statistics for Data Analytics/transformincome.csv")
+names(income_list)
+names(income_list)[1]<- 'age'
+names(income_list)
+library(leaps)
+library(car)
+m1 = lm(income~., data = income_list)
+summary(m1)
